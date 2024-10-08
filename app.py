@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 from Usuario import Usuario
+import pymongo
 import datetime
 secionIniciada = False
 
