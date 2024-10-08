@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal - UniLibre</title>
+    <style>
+        /* General */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #F5F5F5;
+            color: #333;
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #D91E32; /* Rojo bonito */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .nav-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #D4AF37; /* Dorado para hover */
+        }
+
+        /* Foto de perfil en el nav */
+        .nav-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #FFFFFF;
+        }
+
+        .nav-profile span {
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Contenedor principal */
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 40px;
+        }
+
+        /* Sidebar (opciones adicionales) */
+        .sidebar {
+            background-color: #000000;
+            padding: 20px;
+            width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #D4AF37; /* Fondo dorado al hacer hover */
+        }
+
+        /* Muro de publicaciones */
+        .feed {
+            flex-grow: 1;
+            margin-left: 40px;
+        }
+
+        .feed .post {
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .feed .post h3 {
+            color: #D91E32; /* Rojo bonito */
+            font-size: 22px;
+        }
+
+        .feed .post p {
+            font-size: 16px;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .feed .post .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .feed .post .post-footer .post-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .feed .post .post-footer .post-actions a {
+            text-decoration: none;
+            color: #D91E32; /* Rojo bonito */
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .feed .post .post-footer .post-actions a:hover {
+            color: #C62828; /* Rojo más oscuro en hover */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="#" class="nav-logo">UniLibre Social</a>
+        <div class="nav-links">
+            <a href="#">Inicio</a>
+            <a href="#">Mi Perfil</a>
+            <a href="#">Mensajes</a>
+            <a href="#">Configuraciones</a>
+            <a href="/logout">Cerrar Sesión</a>
+        </div>
+        <div class="nav-profile">
+            <span>Usuario</span>
+            <img src="https://via.placeholder.com/40" alt="Foto de perfil">
+        </div>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="main-container">
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a href="#">Explorar</a>
+            <a href="#">Amigos</a>
+            <a href="#">Grupos</a>
+            <a href="#">Eventos</a>
+            <a href="#">Ajustes</a>
+        </div>
+
+        <!-- Muro de publicaciones -->
+        <div class="feed">
+            <!-- Post 1 -->
+            <div class="post">
+                <h3>Publicación de Usuario</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet dui nec lorem vehicula ultrices. Sed accumsan tortor ac felis vulputate viverra.</p>
+                <div class="post-footer">
+                    <div class="post-actions">
+                        <a href="#">Me gusta</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartir</a>
+                    </div>
+                    <span>Hace 5 minutos</span>
+                </div>
+            </div>
+
+            <!-- Post 2 -->
+            <div class="post">
+                <h3>Publicación de Usuario</h3>
+                <p>Aliquam erat volutpat. Curabitur ac velit eu magna pharetra vehicula. Donec in risus ante. Integer sed lectus non erat bibendum luctus.</p>
+                <div class="post-footer">
+                    <div class="post-actions">
+                        <a href="#">Me gusta</a>
+                        <a href="#">Comentar</a>
+                        <a href="#">Compartir</a>
+                    </div>
+                    <span>Hace 10 minutos</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
