@@ -4,6 +4,7 @@ import datetime
 
 class Usuario(UserMixin):
     def __init__(self,usuario:dict):
+        self.id = usuario['id']
         self.nombre = usuario['nombre']
         self.correo = usuario['correo']
         self.contraseña = usuario['contraseña']

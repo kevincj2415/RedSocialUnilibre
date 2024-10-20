@@ -16,15 +16,21 @@
         body {
             background-color: #F5F5F5;
             color: #333;
+            height: 100vh;
         }
 
         /* Navbar */
         nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
             background-color: #D91E32; /* Rojo bonito */
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
+            z-index: 100;
         }
 
         .nav-logo {
@@ -74,14 +80,18 @@
         .main-container {
             display: flex;
             justify-content: space-between;
-            padding: 40px;
+            padding-top: 80px; /* Separación para evitar que el contenido se superponga con la navbar */
         }
 
         /* Sidebar (opciones adicionales) */
         .sidebar {
+            position: fixed;
+            top: 80px;
+            left: 0;
             background-color: #000000;
             padding: 20px;
             width: 250px;
+            height: calc(100vh - 80px); /* Asegurando que cubra el espacio completo */
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
@@ -102,22 +112,39 @@
         }
 
         /* Muro de publicaciones */
-        .feed {
+        .main-content {
             flex-grow: 1;
-            margin-left: 40px;
+            margin-left: 280px; /* Separación suficiente para evitar superposición con la sidebar */
+            padding: 20px;
+            height: calc(100vh - 80px); /* Altura que permite ver el scroll */
+            overflow-y: auto;
         }
 
         .feed .post {
+            display: inline-block; /* Permite que el contenedor crezca según el contenido */
             background-color: #FFFFFF;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 100%; /* Limita el ancho máximo a 100% del contenedor padre */
         }
 
-        .feed .post h3 {
+        .feed .post-content {
+            width: auto;
+            text-align: left; /* Alineación opcional del texto */
+        }
+        
+        .feed .post img {
+            max-width: 100%; /* La imagen no superará el ancho del contenedor */
+            height: auto; /* La altura se ajustará automáticamente */
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .feed .post h2 {
             color: #D91E32; /* Rojo bonito */
-            font-size: 22px;
+            font-size: 20px;
         }
 
         .feed .post p {
@@ -126,26 +153,23 @@
             margin: 10px 0;
         }
 
-        .feed .post .post-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .feed .post .post-footer .post-actions {
+        .post-actions {
             display: flex;
             gap: 10px;
+            margin-top: 10px;
         }
 
-        .feed .post .post-footer .post-actions a {
-            text-decoration: none;
-            color: #D91E32; /* Rojo bonito */
-            font-size: 14px;
-            transition: color 0.3s;
+        .post-actions button {
+            padding: 10px;
+            background-color: #D91E32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .feed .post .post-footer .post-actions a:hover {
-            color: #C62828; /* Rojo más oscuro en hover */
+        .post-actions button:hover {
+            background-color: #C62828;
         }
     </style>
 </head>
@@ -171,45 +195,35 @@
     <div class="main-container">
         
         <!-- Sidebar -->
-        <div class="sidebar">
+        <aside class="sidebar">
             <a href="#">Explorar</a>
+            <a href="/publicacion">Publicar</a>
             <a href="#">Amigos</a>
             <a href="#">Grupos</a>
             <a href="#">Eventos</a>
             <a href="#">Ajustes</a>
-        </div>
+        </aside>
 
         <!-- Muro de publicaciones -->
-        <div class="feed">
-            <!-- Post 1 -->
-            <div class="post">
-                <h3>Publicación de Usuario</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet dui nec lorem vehicula ultrices. Sed accumsan tortor ac felis vulputate viverra.</p>
-                <div class="post-footer">
-                    <div class="post-actions">
-                        <a href="#">Me gusta</a>
-                        <a href="#">Comentar</a>
-                        <a href="#">Compartir</a>
-                    </div>
-                    <span>Hace 5 minutos</span>
-                </div>
-            </div>
+        <main class="main-content">
+            <div class="feed">
+                <!-- Publicación 1 -->
 
-            <!-- Post 2 -->
-            <div class="post">
-                <h3>Publicación de Usuario</h3>
-                <p>Aliquam erat volutpat. Curabitur ac velit eu magna pharetra vehicula. Donec in risus ante. Integer sed lectus non erat bibendum luctus.</p>
-                <div class="post-footer">
-                    <div class="post-actions">
-                        <a href="#">Me gusta</a>
-                        <a href="#">Comentar</a>
-                        <a href="#">Compartir</a>
-                    </div>
-                    <span>Hace 10 minutos</span>
-                </div>
+                {% for publicacion in publicaciones %}
+                    <section class="post">
+                        <h2>{{ publicacion["titulo"] }}</h2>
+                        <p> {{ publicacion["contenido"] }} </p>
+                        <img src="{{publicacion["imagen"]}}" alt="Imagen de la publicación 1" class="post-image" style="width: 400px;" style="height: 200px;">
+                        <div class="post-actions">
+                            <button>Likes: {{ publicacion["reacciones"]["likes"] }}</button>
+                            <button>Comentarios: {{ publicacion["reacciones"]["comentarios"] }}</button>
+                            <button>Compartido: {{ publicacion["reacciones"]["compartidos"] }}</button>
+                        </div>
+                    </section>
+                {% endfor %}
+            
             </div>
-
-        </div>
+        </main>
     </div>
 
 </body>
