@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal - UniLibre</title>
+    <style>
+        /* General */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #F5F5F5;
+            color: #333;
+            height: 100vh;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #D91E32; /* Rojo bonito */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #D4AF37; /* Dorado para hover */
+        }
+
+        /* Foto de perfil en el nav */
+        .nav-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+
+        .nav-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #FFFFFF;
+        }
+
+        .nav-profile-name {
+            color: white;
+            font-size: 20px;
+        }
+
+        /* Contenedor principal */
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 80px; /* Separación para evitar que el contenido se superponga con la navbar */
+        }
+
+        /* Sidebar (opciones adicionales) */
+        .sidebar {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            background-color: #000000;
+            padding: 20px;
+            width: 250px;
+            height: calc(100vh - 80px); /* Asegurando que cubra el espacio completo */
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #D4AF37; /* Fondo dorado al hacer hover */
+        }
+
+        /* Muro de publicaciones */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 280px; /* Separación suficiente para evitar superposición con la sidebar */
+            padding: 20px;
+            height: calc(100vh - 80px); /* Altura que permite ver el scroll */
+            overflow-y: auto;
+        }
+
+        .feed {
+            display: flex;
+            flex-direction: column; /* Hace que las publicaciones aparezcan una debajo de otra */
+            gap: 20px; /* Espacio entre publicaciones */
+        }
+
+        .feed .post {
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px; /* Tamaño fijo para todas las publicaciones */
+            margin: 0 auto; /* Centrar las publicaciones */
+        }
+
+        .feed .post-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .feed .post-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .feed .post h2 {
+            color: #D91E32; /* Rojo bonito */
+            font-size: 20px;
+        }
+
+        .feed .post p {
+            font-size: 16px;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .feed .post-image {
+            width: 100%; /* La imagen ocupará el ancho completo del contenedor */
+            height: auto; /* Altura fija para las imágenes */
+            object-fit: cover;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .post-actions button {
+            padding: 10px;
+            background-color: #D91E32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .post-actions button:hover {
+            background-color: #C62828;
+        }
+
+        /* Estilos para la sección de perfil */
+        /* Ajustes para la sección del perfil */
+        .Perfil {
+            background-color: #fff; /* Fondo blanco para destacar el contenido */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+            text-align: center;
+            max-width: 400px; /* Limitar el tamaño del perfil */
+            position: sticky; /* Mantener el perfil fijo al hacer scroll */
+            top: 20px; /* Fija la posición desde la parte superior */
+            margin: 0 auto; /* Centrar el perfil en la página */
+        }
+        
+        /* Estilo para la imagen de perfil */
+        .profile-pic {
+            width: 150px; 
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #D91E32; /* Borde con el rojo bonito */
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Animación al pasar el cursor sobre la imagen */
+        .profile-pic:hover {
+            transform: scale(1.05); /* Efecto de agrandar ligeramente */
+        }
+        
+        /* Estilo para los botones */
+        .btn {
+            display: block;
+            background-color: #D91E32; /* Rojo bonito */
+            color: #fff;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-bottom: 15px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-weight: bold;
+        }
+        
+        /* Cambio de color al hacer hover en los botones */
+        .btn:hover {
+            background-color: #C62828; /* Un tono más oscuro del rojo */
+            transform: translateY(-3px); /* Efecto de levantar ligeramente */
+        }
+        
+        /* Botón de cerrar sesión con un tono más peligroso */
+        .btn:last-child {
+            background-color: #FF6B6B; /* Un tono rojo más claro para resaltar el cierre de sesión */
+        }
+        
+        .btn:last-child:hover {
+            background-color: #EE5253; /* Efecto hover para el botón de cierre de sesión */
+        }
+
+        /* Sección principal de contenido */
+        .content {
+            background-color: #fff; /* Fondo blanco para las secciones principales */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+            margin-left: 20px; /* Separación del perfil */
+            flex-grow: 1;
+            height: 100vh;
+            overflow-y: auto; /* Permitir que el contenido de amigos y publicaciones haga scroll */
+        }
+
+        /* Estilos para la lista de amigos */
+        .friends h2 {
+            color: #D91E32; /* Título con el rojo bonito */
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .friend-list {
+            list-style: none; /* Eliminar viñetas de la lista */
+            padding-left: 0; /* Alinear con el borde del contenedor */
+        }
+
+        .friend-item {
+            background-color: #F5F5F5; /* Fondo gris claro */
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px; /* Espacio entre cada amigo */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+            transition: background-color 0.3s ease;
+        }
+
+        .friend-item:hover {
+            background-color: #fff; /* Cambiar el fondo al pasar el cursor */
+        }
+
+        /* Estilos para la lista de publicaciones */
+        .posts h2 {
+            color: #D91E32; /* Título con el rojo bonito */
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .post-list {
+            list-style: none; /* Eliminar viñetas de la lista */
+            padding-left: 0; /* Alinear con el borde del contenedor */
+        }
+
+        .post-item {
+            background-color: #F5F5F5; /* Fondo gris claro */
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px; /* Espacio entre cada publicación */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+            transition: background-color 0.3s ease;
+        }
+
+        .post-item:hover {
+            background-color: #fff; /* Cambiar el fondo al pasar el cursor */
+        }
+
+        /* uhijoikpljhklj */
+
+        /* Estilos para la sección de publicaciones */
+.post {
+    background-color: #fff; /* Fondo blanco para destacar la publicación */
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 20px; /* Espaciado interno */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    margin-bottom: 20px; /* Separación entre publicaciones */
+    max-width: 600px; /* Tamaño máximo de la publicación */
+    margin: 0 auto; /* Centrar la publicación */
+}
+
+/* Estilo para la parte del perfil dentro de la publicación */
+.post-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espacio entre la imagen y el nombre */
+    margin-bottom: 15px; /* Espaciado inferior para separar del contenido */
+}
+
+.post-profile img {
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%; /* Imagen de perfil circular */
+    object-fit: cover; /* Ajustar imagen sin perder proporción */
+    border: 2px solid #D91E32; /* Borde con el rojo bonito */
+}
+
+.post-profile p {
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Estilo para el título de la publicación */
+.post h2 {
+    color: #D91E32; /* Rojo bonito */
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* Estilo para el contenido de la publicación */
+.post p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* Estilo para la imagen dentro de la publicación */
+.post-image {
+    width: 100%; /* Imagen ocupará el ancho completo del contenedor */
+    height: auto;
+    border-radius: 10px; /* Bordes redondeados */
+    object-fit: cover; /* Ajustar imagen sin perder proporción */
+    margin-bottom: 15px; /* Separación inferior */
+}
+
+/* Estilo para las acciones de la publicación (likes, comentarios, compartir) */
+.post-actions {
+    display: flex;
+    gap: 10px; /* Espacio entre botones */
+    margin-top: 10px;
+}
+
+/* Estilo para los botones */
+.post-actions button {
+    padding: 10px 15px;
+    background-color: #D91E32; /* Rojo bonito */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Efecto hover para los botones */
+.post-actions button:hover {
+    background-color: #C62828; /* Un tono más oscuro del rojo */
+}
+
+/* Estilo especial para el botón de eliminar (si es visible) */
+.post-actions form button {
+    background-color: #FF6B6B; /* Tono rojo claro para resaltar el botón de eliminar */
+}
+
+.post-actions form button:hover {
+    background-color: #EE5253; /* Efecto hover para el botón de eliminar */
+}
+
+
+        
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="#" class="nav-logo">UniLibre Social</a>
+        <div class="nav-links">
+            <a href="/inicio">Inicio</a>
+            <a href="/perfil">Mi Perfil</a>
+            <a href="#">Mensajes</a>
+            <a href="#">Configuraciones</a>
+            <a href="/logout">Cerrar Sesión</a>
+        </div>
+        <div class="nav-profile">
+            <p class="nav-profile-name">{{status["nombre"]}}</p>
+            <img src="{{status["fotoPerfil"]}}" alt="Foto de perfil">
+        </div>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="main-container">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="#">Explorar</a>
+            <a href="/publicacion">Publicar</a>
+            <a href="#">Amigos</a>
+            <a href="#">Grupos</a>
+            <a href="#">Eventos</a>
+            <a href="#">Ajustes</a>
+        </aside>

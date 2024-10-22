@@ -1,0 +1,27 @@
+{% include 'navs/navEditarPerfil.html' %}
+
+    <div class="containerEditarPerfil">
+        <h2>Actualizar Usuario</h2>
+        <form action="/actualizar_usuario" method="POST" enctype="multipart/form-data">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="{{status["nombre"]}}" required>
+
+            <label for="correo">Correo Electrónico:</label>
+            <input type="email" id="correo" name="correo" value="{{status["correo"]}}" required>
+
+            <label for="rol">Rol:</label>
+            <select id="rol" name="rol" value="{{status["rol"]}}">
+                <option value="admin">Estudiante</option>
+                <option value="usuario">Profesor</option>
+                <option value="invitado">Directivo</option>
+            </select>
+
+            <label for="foto_perfil">Foto de Perfil:</label>
+            <input type="text" id="foto_perfil" name="foto_perfil" value="{{status["fotoPerfil"]}}">
+
+            <input type="submit" value="Actualizar Usuario">
+        </form>
+    </div>
+
+</body>
+</html>

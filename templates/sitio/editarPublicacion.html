@@ -1,0 +1,20 @@
+{% include 'navs/navEditarPerfil.html' %}
+
+    <div class="containerEditarPerfil">
+        <h2>Actualizar Usuario</h2>
+        <form action="/editarPublicacion/{{publicacion["_id"]}}" method="POST" enctype="multipart/form-data">
+            <label for="nombre">titulo:</label>
+            <input type="text" id="nombre" name="titulo" value="{{publicacion["titulo"]}}" required>
+
+            <label for="correo">Contenido:</label>
+            <input type="text" id="correo" name="contenido" value="{{publicacion["contenido"]}}" required>
+
+            <label for="foto_perfil">Foto:</label>
+            <input type="text" id="foto_perfil" name="imagen" value="{{publicacion["imagen"]}}">
+
+            <input type="submit" value="Actualizar Usuario">
+        </form>
+    </div>
+
+</body>
+</html>

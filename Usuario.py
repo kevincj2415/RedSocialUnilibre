@@ -4,12 +4,12 @@ import datetime
 
 class Usuario(UserMixin):
     def __init__(self,usuario:dict):
-        self.id = usuario['id']
+        self.pid = usuario['id']
         self.nombre = usuario['nombre']
         self.correo = usuario['correo']
         self.contraseña = usuario['contraseña']
         self.rol = usuario['rol']
-        self.foto = 'https://via.placeholder.com/150'
+        self.foto = usuario['foto_perfil']
         self.fechaRegistro = datetime.datetime.now()
         
     def set_password(self, password):

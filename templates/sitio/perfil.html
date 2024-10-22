@@ -1,0 +1,55 @@
+{% include 'navs/navPrincipal.html' %}
+
+    <!-- Barra lateral para ver foto de perfil y opciones -->
+        <div class="Perfil">
+            <img src="{{status["fotoPerfil"]}}" alt="Foto de perfil" class="profile-pic">
+            <a href="/cambiarFoto" id="changePhotoBtn" class="btn">Cambiar Foto de Perfil</a>
+            <a href="/editarPerfil" class="btn">Editar Información</a>
+            <a href="/inicio" class="btn">Inicio</a>
+            <a href="/logout" class="btn">Cerrar Sesión</a>
+        </div>
+
+    <!-- Sección principal de contenido -->
+    <div class="content">
+        <!-- Lista de amigos
+        <div class="friends">
+            <h2>Amigos</h2>
+            <ul class="friend-list">
+                <li class="friend-item">Amigo 1</li>
+                <li class="friend-item">Amigo 2</li>
+                <li class="friend-item">Amigo 3</li>
+            </ul>
+        </div> -->
+
+        <!-- Lista de publicaciones -->
+        <div class="posts">
+            <h2>Publicaciones</h2>
+            {% for publicacion in publiPersonales %}
+            <section class="post">
+                <div class="post-profile">
+                    <img src="{{publicacion["autor"]["foto"]}}" alt="Foto de perfil">
+                    <p>{{ publicacion["autor"]["nombre"] }}</p>
+                </div>
+                <h2>{{ publicacion["titulo"] }}</h2>
+                <p>{{ publicacion["contenido"] }}</p>
+                <img src="{{publicacion["imagen"]}}" alt="Imagen de la publicación" class="post-image">
+                <div class="post-actions">
+                    <button>Likes: {{ publicacion["reacciones"]["likes"] }}</button>
+                    <button>Comentarios: {{ publicacion["reacciones"]["comentarios"] }}</button>
+                    <button>Compartido: {{ publicacion["reacciones"]["compartidos"] }} </button>
+                    {% if publicacion["autor"]["id"] == status["idUsuario"] %}
+                        <form action="/editarpublicacion" method="POST">
+                            <input type="hidden" name="_id" value="{{publicacion["_id"]}}">
+                            <button type="submit">Editar</button>
+                        </form>
+                        <form action="/eliminarpublicacion/{{publicacion["_id"]}}" method="POST">
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </section>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+

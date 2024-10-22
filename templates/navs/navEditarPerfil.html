@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil - UniLibre</title>
+    <style>
+        /* General */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #F5F5F5;
+            color: #333;
+            height: 100vh;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #D91E32; /* Rojo bonito */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #D4AF37; /* Dorado para hover */
+        }
+
+        /* Foto de perfil en el nav */
+        .nav-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+
+        .nav-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #FFFFFF;
+        }
+
+        .nav-profile-name {
+            color: white;
+            font-size: 20px;
+        }
+
+        /* Contenedor principal */
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 80px; /* Separación para evitar que el contenido se superponga con la navbar */
+        }
+
+        /* Sidebar (opciones adicionales) */
+        .sidebar {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            background-color: #000000;
+            padding: 20px;
+            width: 250px;
+            height: calc(100vh - 80px); /* Asegurando que cubra el espacio completo */
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            font-size: 18px;
+            text-decoration: none;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #D4AF37; /* Fondo dorado al hacer hover */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .containerEditarPerfil {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="file"],
+        select {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        
+
+        
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="#" class="nav-logo">UniLibre Social</a>
+        <div class="nav-links">
+            <a href="/inicio">Inicio</a>
+            <a href="/perfil">Mi Perfil</a>
+            <a href="#">Mensajes</a>
+            <a href="#">Configuraciones</a>
+            <a href="/logout">Cerrar Sesión</a>
+        </div>
+        <div class="nav-profile">
+            <p class="nav-profile-name">{{status["nombre"]}}</p>
+            <img src="{{status["fotoPerfil"]}}" alt="Foto de perfil">
+        </div>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="main-container">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="#">Explorar</a>
+            <a href="/publicacion">Publicar</a>
+            <a href="#">Amigos</a>
+            <a href="#">Grupos</a>
+            <a href="#">Eventos</a>
+            <a href="#">Ajustes</a>
+        </aside>

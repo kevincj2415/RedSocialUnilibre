@@ -1,227 +1,35 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal - UniLibre</title>
-    <style>
-        /* General */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
+{% include 'navs/navPrincipal.html' %}
 
-        body {
-            background-color: #F5F5F5;
-            color: #333;
-            height: 100vh;
-        }
-
-        /* Navbar */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: #D91E32; /* Rojo bonito */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            z-index: 100;
-        }
-
-        .nav-logo {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #D4AF37; /* Dorado para hover */
-        }
-
-        /* Foto de perfil en el nav */
-        .nav-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-profile img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid #FFFFFF;
-        }
-
-        .nav-profile span {
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        /* Contenedor principal */
-        .main-container {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 80px; /* Separación para evitar que el contenido se superponga con la navbar */
-        }
-
-        /* Sidebar (opciones adicionales) */
-        .sidebar {
-            position: fixed;
-            top: 80px;
-            left: 0;
-            background-color: #000000;
-            padding: 20px;
-            width: 250px;
-            height: calc(100vh - 80px); /* Asegurando que cubra el espacio completo */
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar a {
-            display: block;
-            color: white;
-            font-size: 18px;
-            text-decoration: none;
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .sidebar a:hover {
-            background-color: #D4AF37; /* Fondo dorado al hacer hover */
-        }
-
-        /* Muro de publicaciones */
-        .main-content {
-            flex-grow: 1;
-            margin-left: 280px; /* Separación suficiente para evitar superposición con la sidebar */
-            padding: 20px;
-            height: calc(100vh - 80px); /* Altura que permite ver el scroll */
-            overflow-y: auto;
-        }
-
-        .feed .post {
-            display: inline-block; /* Permite que el contenedor crezca según el contenido */
-            background-color: #FFFFFF;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 100%; /* Limita el ancho máximo a 100% del contenedor padre */
-        }
-
-        .feed .post-content {
-            width: auto;
-            text-align: left; /* Alineación opcional del texto */
-        }
-        
-        .feed .post img {
-            max-width: 100%; /* La imagen no superará el ancho del contenedor */
-            height: auto; /* La altura se ajustará automáticamente */
-            border-radius: 10px;
-            margin-top: 10px;
-        }
-
-        .feed .post h2 {
-            color: #D91E32; /* Rojo bonito */
-            font-size: 20px;
-        }
-
-        .feed .post p {
-            font-size: 16px;
-            color: #666;
-            margin: 10px 0;
-        }
-
-        .post-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .post-actions button {
-            padding: 10px;
-            background-color: #D91E32;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .post-actions button:hover {
-            background-color: #C62828;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Navbar -->
-    <nav>
-        <a href="#" class="nav-logo">UniLibre Social</a>
-        <div class="nav-links">
-            <a href="#">Inicio</a>
-            <a href="#">Mi Perfil</a>
-            <a href="#">Mensajes</a>
-            <a href="#">Configuraciones</a>
-            <a href="/logout">Cerrar Sesión</a>
-        </div>
-        <div class="nav-profile">
-            <span>Usuario</span>
-            <img src="https://via.placeholder.com/40" alt="Foto de perfil">
-        </div>
-    </nav>
-
-    <!-- Contenedor principal -->
-    <div class="main-container">
-        
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <a href="#">Explorar</a>
-            <a href="/publicacion">Publicar</a>
-            <a href="#">Amigos</a>
-            <a href="#">Grupos</a>
-            <a href="#">Eventos</a>
-            <a href="#">Ajustes</a>
-        </aside>
-
+    
         <!-- Muro de publicaciones -->
         <main class="main-content">
             <div class="feed">
                 <!-- Publicación 1 -->
-
                 {% for publicacion in publicaciones %}
                     <section class="post">
+                        <div class="post-profile">
+                            <img src="{{publicacion["autor"]["foto"]}}" alt="Foto de perfil">
+                            <p>{{ publicacion["autor"]["nombre"] }}</p>
+                        </div>
                         <h2>{{ publicacion["titulo"] }}</h2>
-                        <p> {{ publicacion["contenido"] }} </p>
-                        <img src="{{publicacion["imagen"]}}" alt="Imagen de la publicación 1" class="post-image" style="width: 400px;" style="height: 200px;">
+                        <p>{{ publicacion["contenido"] }}</p>
+                        <img src="{{publicacion["imagen"]}}" alt="Imagen de la publicación" class="post-image">
                         <div class="post-actions">
                             <button>Likes: {{ publicacion["reacciones"]["likes"] }}</button>
                             <button>Comentarios: {{ publicacion["reacciones"]["comentarios"] }}</button>
-                            <button>Compartido: {{ publicacion["reacciones"]["compartidos"] }}</button>
+                            <button>Compartido: {{ publicacion["reacciones"]["compartidos"] }} </button>
+                            {% if publicacion["autor"]["id"] == status["idUsuario"] %}
+                                <form action="/editarpublicacion" method="POST">
+                                    <input type="hidden" name="_id" value="{{publicacion["_id"]}}">
+                                    <button type="submit">Editar</button>
+                                </form>
+                                <form action="/eliminarpublicacion/{{publicacion["_id"]}}" method="POST">
+                                    <button type="submit">Eliminar</button>
+                                </form>
+                            {% endif %}
                         </div>
                     </section>
                 {% endfor %}
-            
             </div>
         </main>
     </div>

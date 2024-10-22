@@ -2,10 +2,11 @@
 
         <!-- Navigation -->
       <nav class="navbar">
-        <a href="#">Inicio</a>
-        <a href="#">Características</a>
-        <a href="#">Servicios</a>
-        <a href="#">Contacto</a>
+        <section class="cta-section">
+            <h2>¡Comienza Hoy!</h2>
+            <button onclick="location.href='/registro'">Registrarse Ahora</button>
+            <button onclick="location.href='/inicioSesion'">Iniciar Sesión</button>
+        </section>
       </nav>
 
       <!-- Main Content -->
@@ -31,11 +32,5 @@
       </section>
 
       <!-- CTA Section -->
-      <section class="cta-section">
-          <h2>¡Comienza Hoy!</h2>
-          <button onclick="location.href='/registro'">Registrarse Ahora</button>
-          <button onclick="location.href='/inicioSesion'">Iniciar Sesión</button>
-      </section>
-    
-
+      
 {% include 'sitio/footerIndex.html' %}

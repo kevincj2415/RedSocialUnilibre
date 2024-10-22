@@ -7,19 +7,27 @@ from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 from Usuario import Usuario
 from pymongo import MongoClient
-import datetime
-secionIniciada = False
-nombre = ""
-fotoPerfil = ""
-idUsuario = 0
-app = Flask(__name__)
+from bson.objectid import ObjectId
 
+import datetime
+status = {'secionIniciada' : False,
+    'nombre' : "",
+    "correo" : "",
+    "rol" : "",
+    'fotoPerfil' : "",
+    'idUsuario' : 0,
+    }
+publicaciones = ""
+
+PubliPersonales = ""
+
+app = Flask(__name__)
 
 cliente = MongoClient("mongodb+srv://kevincj2415:e2BhakVv76vBMD7f@cluster0.hb2dv.mongodb.net/")
 app.db = cliente.redsocialuniversidadlibre
-publicaciones = ''
-publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
 
+publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
+PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
 
 app.secret_key = 'secret'
 
@@ -47,8 +55,8 @@ def inicioSesion():
 
 @app.route('/inicio')
 def inicio():
-    if secionIniciada:
-        return render_template('sitio/inicio.html', publicaciones=publicaciones)
+    if status['secionIniciada']:
+        return render_template('sitio/inicio.html', publicaciones=publicaciones, status=status, PubliPersonales=PubliPersonales)
     else:
         return render_template('sitio/inicioSesion.html')
 
@@ -68,14 +76,15 @@ def login():
     if not usuario.check_password(password):
         return redirect('/inicioSesion')
     else:
-        global secionIniciada
-        global nombre
-        global fotoPerfil
-        global idUsuario
-        idUsuario = usuario.id
-        fotoPerfil = usuario.foto
-        nombre = usuario.nombre
-        secionIniciada = True
+        global status
+        global PubliPersonales
+        status['secionIniciada'] = True
+        status['nombre'] = usuario.nombre
+        status["correo"] = usuario.correo
+        status['rol'] = usuario.rol
+        status['fotoPerfil'] = usuario.foto
+        status['idUsuario'] = usuario.pid
+        PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
         return redirect('/inicio')
     
 @app.route('/registrar', methods=['POST'])
@@ -99,13 +108,13 @@ def registrar():
 
 @app.route('/logout')
 def logout():
-    global secionIniciada
-    secionIniciada = False
+    global status
+    status['secionIniciada'] = False
     return redirect('/')
 
 @app.route('/perfil')
 def perfil():
-    return render_template('sitio/perfil.html')
+    return render_template('sitio/perfil.html', status=status, publiPersonales=PubliPersonales)
 
 @app.route('/publicacion')
 def publicarcion():
@@ -113,15 +122,119 @@ def publicarcion():
 
 @app.route('/publicar', methods=['POST'])
 def publicar():
+    global PubliPersonales
     titulo = request.form['titulo']
     contenido = request.form['contenido']
     imagen = request.form['imagen']
     categoria = request.form['categoria']
-    autor = {"id":globals()['idUsuario'], "nombre":globals()['nombre'], "foto":globals()['fotoPerfil']}
+    autor = {"id":status['idUsuario'], "nombre":status['nombre'], "foto":status['fotoPerfil']}
     reacciones = {'likes':0, 'comentarios':0, 'compartidos':0}
     comentarios = []
     publicacion = {'titulo':titulo, 'contenido':contenido, 'imagen':imagen, 'categoria':categoria, 'fecha_publicacion':datetime.datetime.now(), 'reacciones':reacciones, 'autor':autor, 'comentarios':comentarios}
     app.db.publicaciones.insert_one(publicacion)
+    publicaciones.append(publicacion)
+    PubliPersonales = []
+    PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
+    return redirect('/inicio')
+
+
+@app.route('/cambiarFoto')
+def cambiarFoto():
+    return render_template('sitio/cambiarFotoPerfil.html', status=status)
+
+@app.route('/cambiarFotoPerfil', methods=['POST'])
+def cambiarFotoPerfil():
+    global publicaciones
+    global PubliPersonales
+    foto = request.form['foto']
+    sql = "UPDATE usuario SET foto_perfil = %s WHERE id = %s"
+    datos = (foto, status['idUsuario'])
+    conexion = mysql.connection
+    cursor = conexion.cursor()
+    cursor.execute(sql, datos)
+    conexion.commit()
+    for publicacion in app.db.publicaciones.find({'autor.id': status['idUsuario']}):
+        id = publicacion['_id']
+        ayuda = {'autor.foto': foto}
+        app.db.publicaciones.update_one({'_id': ObjectId(id)}, {'$set': ayuda})
+    status['fotoPerfil'] = foto
+    publicaciones = []
+    publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
+    PubliPersonales = []
+    PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
+    return redirect('/perfil')
+
+@app.route('/actualizar_usuario', methods=['POST'])
+def actualizarUsuario():
+    global publicaciones
+    global PubliPersonales
+    nombre = request.form['nombre']
+    correo = request.form['correo']
+    rol = request.form['rol']
+    foto = request.form['foto_perfil']
+    sql = "UPDATE usuario SET nombre = %s, correo = %s, rol = %s, foto_perfil = %s WHERE id = %s"
+    datos = (nombre, correo, rol, foto, status['idUsuario'])
+    conexion = mysql.connection
+    cursor = conexion.cursor()
+    cursor.execute(sql, datos)
+    conexion.commit()
+    for publicacion in app.db.publicaciones.find({'autor.id': status['idUsuario']}):
+        id = publicacion['_id']
+        ayuda = {'autor.nombre': nombre, 'autor.foto': foto}
+        app.db.publicaciones.update_one({'_id': ObjectId(id)}, {'$set': ayuda})
+    status['nombre'] = nombre
+    status['correo'] = correo
+    status['rol'] = rol
+    status['fotoPerfil'] = foto
+    publicaciones = []
+    publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
+    PubliPersonales = []
+    PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
+    return redirect('/perfil')
+
+@app.route('/editarPerfil')
+def editarPerfil():
+    return render_template('sitio/editraPerfil.html', status=status)
+
+@app.route('/eliminarpublicacion/<id>', methods=['POST'])
+def eliminarPublicacion(id):
+    global PubliPersonales
+    try:
+        
+        object_id = ObjectId(id)
+        app.db.publicaciones.delete_one({'_id': object_id})
+
+        publicaciones = []
+        publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
+        PubliPersonales = []
+        PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
+
+    except Exception as e:
+        print(f"Error al eliminar la publicación: {e}")
+        return redirect('/error') 
+
+    return render_template('sitio/inicio.html', publicaciones=publicaciones, status=status)
+
+@app.route('/editarpublicacion', methods=['POST'])
+def editarpublicacion():
+    id = request.form['_id']
+    publicacion = app.db.publicaciones.find_one({'_id': ObjectId(id)})
+    return render_template('sitio/editarPublicacion.html', status=status, publicacion=publicacion)
+
+
+@app.route('/editarPublicacion/<id>', methods=['POST'])
+def editarPublicacion(id):
+    global PubliPersonales
+    global publicaciones
+    titulo = request.form['titulo']
+    contenido = request.form['contenido']
+    imagen = request.form['imagen']
+    publicacion = {'titulo':titulo, 'contenido':contenido, 'imagen':imagen}
+    app.db.publicaciones.update_one({'_id': ObjectId(id)}, {'$set': publicacion})
+    publicaciones = []
+    publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
+    PubliPersonales = []
+    PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
     return redirect('/inicio')
 
 if __name__ == '__main__':

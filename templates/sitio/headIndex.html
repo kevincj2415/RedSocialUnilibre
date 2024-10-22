@@ -6,29 +6,34 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        /* General */
         body {
             font-family: 'Arial', sans-serif;
             background-color: #FBFEF9; /* Fondo claro */
             color: #191923; /* Texto oscuro */
             margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
-        
+
         /* Header */
         .header {
-            background: linear-gradient(135deg, #F39237, #BF1363); /* Gradiente Naranja - Magenta */
+            background: linear-gradient(135deg, #CC0000, #BF1363); /* Gradiente Rojo - Magenta */
             padding: 20px;
             text-align: center;
             color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         .header h1 {
             margin: 0;
             font-size: 3rem;
             font-weight: bold;
+            letter-spacing: 2px;
         }
         .header p {
             margin-top: 5px;
             font-size: 1.2rem;
+            letter-spacing: 1px;
         }
 
         /* Navigation */
@@ -36,17 +41,18 @@
             display: flex;
             justify-content: center;
             padding: 15px;
-            background-color: #0E79B2; /* Azul */
+            background-color: #CC0000; /* Rojo */
         }
         .navbar a {
             margin: 0 15px;
             color: #FBFEF9; /* Fondo claro */
             text-decoration: none;
             font-weight: bold;
+            text-transform: uppercase;
             transition: color 0.3s;
         }
         .navbar a:hover {
-            color: #BF1363; /* Magenta */
+            color: #F39237; /* Naranja claro */
         }
 
         /* Main Content */
@@ -54,83 +60,107 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
             background-color: #FBFEF9; /* Fondo claro */
         }
         .main-content h2 {
-            color: #F39237; /* Naranja */
+            color: #CC0000; /* Rojo Universidad Libre */
             margin-bottom: 30px;
+            font-size: 2.5rem;
         }
         .card {
             background-color: #FFF;
             border-radius: 15px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+            padding: 30px;
             margin: 15px;
-            width: 300px;
+            width: 350px;
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             border-left: 5px solid #0E79B2; /* Detalle de borde azul */
         }
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
         }
         .card i {
-            font-size: 3rem;
+            font-size: 4rem;
             color: #BF1363; /* Magenta */
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         .card h3 {
             color: #191923; /* Texto oscuro */
-            margin: 10px 0;
+            margin: 15px 0;
+            font-size: 1.8rem;
         }
         .card p {
             color: #777;
+            font-size: 1rem;
         }
 
         /* CTA Section */
         .cta-section {
             background: linear-gradient(135deg, #0E79B2, #191923); /* Gradiente Azul - Fondo Oscuro */
-            padding: 40px;
+            padding: 50px;
             text-align: center;
             color: white;
-            margin: 30px 0;
+            margin: 50px 0;
+            border-radius: 15px;
+            box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1);
         }
         .cta-section h2 {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
         }
         .cta-section button {
             background-color: #F39237; /* Naranja */
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 1rem;
+            padding: 15px 30px;
+            font-size: 1.2rem;
             border-radius: 25px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .cta-section button:hover {
             background-color: #BF1363; /* Magenta */
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         /* Footer */
         .footer {
             background-color: #191923; /* Fondo oscuro */
-            padding: 20px;
+            padding: 25px;
             text-align: center;
             color: #FBFEF9; /* Texto claro */
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
         }
         .footer a {
             color: #0E79B2; /* Azul */
             text-decoration: none;
-            margin: 0 10px;
+            margin: 0 15px;
+            font-weight: bold;
             transition: color 0.3s;
         }
         .footer a:hover {
             color: #F39237; /* Naranja */
         }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 40px 15px;
+            }
+            .card {
+                width: 100%;
+                margin: 10px 0;
+            }
+            .cta-section {
+                padding: 40px 15px;
+            }
+        }
+
     </style>
 </head>
 <body>
