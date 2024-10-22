@@ -1,0 +1,53 @@
+{% include 'navs/navPrincipal.html' %}
+
+    <!-- Barra lateral para ver foto de perfil y opciones -->
+        <div class="Perfil">
+            <div class="post-profile">
+                <img src="{{publicacion["autor"]["foto"]}}" alt="Foto de perfil">
+                <p>{{ publicacion["autor"]["nombre"] }}</p>
+            </div>
+            <h2>{{ publicacion["titulo"] }}</h2>
+            <p>{{ publicacion["contenido"] }}</p>
+            <img src="{{publicacion["imagen"]}}" alt="Imagen de la publicación" class="post-image">
+            
+        </div>
+
+    <!-- Sección principal de contenido -->
+    <div class="content">
+        <!-- Lista de amigos
+        <div class="friends">
+            <h2>Amigos</h2>
+            <ul class="friend-list">
+                <li class="friend-item">Amigo 1</li>
+                <li class="friend-item">Amigo 2</li>
+                <li class="friend-item">Amigo 3</li>
+            </ul>
+        </div> -->
+
+        <!-- Lista de publicaciones -->
+        <div class="posts">
+            <h2>comentarios</h2>
+            {% for comentario in comentarios %}
+            <section class="post">
+                <div class="post-profile">
+                    <img src="{{comentario["autor"]["foto"]}}" alt="Foto de perfil">
+                    <p class="comentario-autor">{{ comentario["autor"]["nombre"] }}</p>
+                </div>
+                <p>{{ comentario["contenido"] }}</p>
+            </section>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>
+        <form class="comment-form" action='/comentar' method="POST">
+            <input type="hidden" name="_id" value="{{publicacion['_id']}}">
+            <input type="hidden" name="fotoAutor" value="{{status["fotoPerfil"]}}">
+            <input type="hidden" name="nombreAutor" value="{{status["nombre"]}}">
+            <input type="text" placeholder="Escribe tu comentario aquí..." name='contenido' required>
+            <button type="submit">Enviar</button>
+        </form>
+    </footer>
+    
+</div>
+

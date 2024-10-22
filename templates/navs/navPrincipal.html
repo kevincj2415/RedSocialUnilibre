@@ -313,96 +313,138 @@
         /* uhijoikpljhklj */
 
         /* Estilos para la sección de publicaciones */
-.post {
-    background-color: #fff; /* Fondo blanco para destacar la publicación */
-    border-radius: 10px; /* Bordes redondeados */
-    padding: 20px; /* Espaciado interno */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
-    margin-bottom: 20px; /* Separación entre publicaciones */
-    max-width: 600px; /* Tamaño máximo de la publicación */
-    margin: 0 auto; /* Centrar la publicación */
-}
+        .post {
+            background-color: #fff; /* Fondo blanco para destacar la publicación */
+            border-radius: 10px; /* Bordes redondeados */
+            padding: 20px; /* Espaciado interno */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+            margin-bottom: 20px; /* Separación entre publicaciones */
+            max-width: 600px; /* Tamaño máximo de la publicación */
+            margin: 0 auto; /* Centrar la publicación */
+        }
 
-/* Estilo para la parte del perfil dentro de la publicación */
-.post-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Espacio entre la imagen y el nombre */
-    margin-bottom: 15px; /* Espaciado inferior para separar del contenido */
-}
+        /* Estilo para la parte del perfil dentro de la publicación */
+        .post-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Espacio entre la imagen y el nombre */
+            margin-bottom: 15px; /* Espaciado inferior para separar del contenido */
+        }
 
-.post-profile img {
-    width: 50px; 
-    height: 50px;
-    border-radius: 50%; /* Imagen de perfil circular */
-    object-fit: cover; /* Ajustar imagen sin perder proporción */
-    border: 2px solid #D91E32; /* Borde con el rojo bonito */
-}
+        .post-profile img {
+            width: 50px; 
+            height: 50px;
+            border-radius: 50%; /* Imagen de perfil circular */
+            object-fit: cover; /* Ajustar imagen sin perder proporción */
+            border: 2px solid #D91E32; /* Borde con el rojo bonito */
+        }
 
-.post-profile p {
-    font-size: 18px;
-    color: #333;
-    font-weight: bold;
-}
+        .post-profile p {
+            font-size: 18px;
+            color: #333;
+            font-weight: bold;
+        }
 
-/* Estilo para el título de la publicación */
-.post h2 {
-    color: #D91E32; /* Rojo bonito */
-    font-size: 22px;
-    margin-bottom: 10px;
-}
+        /* Estilo para el título de la publicación */
+        .post h2 {
+            color: #D91E32; /* Rojo bonito */
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
 
-/* Estilo para el contenido de la publicación */
-.post p {
-    font-size: 16px;
-    color: #666;
-    line-height: 1.5;
-    margin-bottom: 15px;
-}
+        /* Estilo para el contenido de la publicación */
+        .post p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
 
-/* Estilo para la imagen dentro de la publicación */
-.post-image {
-    width: 100%; /* Imagen ocupará el ancho completo del contenedor */
-    height: auto;
-    border-radius: 10px; /* Bordes redondeados */
-    object-fit: cover; /* Ajustar imagen sin perder proporción */
-    margin-bottom: 15px; /* Separación inferior */
-}
+        /* Estilo para la imagen dentro de la publicación */
+        .post-image {
+            width: 100%; /* Imagen ocupará el ancho completo del contenedor */
+            height: auto;
+            border-radius: 10px; /* Bordes redondeados */
+            object-fit: cover; /* Ajustar imagen sin perder proporción */
+            margin-bottom: 15px; /* Separación inferior */
+        }
 
-/* Estilo para las acciones de la publicación (likes, comentarios, compartir) */
-.post-actions {
-    display: flex;
-    gap: 10px; /* Espacio entre botones */
-    margin-top: 10px;
-}
+        /* Estilo para las acciones de la publicación (likes, comentarios, compartir) */
+        .post-actions {
+            display: flex;
+            gap: 10px; /* Espacio entre botones */
+            margin-top: 10px;
+        }
 
-/* Estilo para los botones */
-.post-actions button {
-    padding: 10px 15px;
-    background-color: #D91E32; /* Rojo bonito */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 16px;
-    font-weight: bold;
-}
+        /* Estilo para los botones */
+        .post-actions button {
+            padding: 10px 15px;
+            background-color: #D91E32; /* Rojo bonito */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+        }
 
-/* Efecto hover para los botones */
-.post-actions button:hover {
-    background-color: #C62828; /* Un tono más oscuro del rojo */
-}
+        /* Efecto hover para los botones */
+        .post-actions button:hover {
+            background-color: #C62828; /* Un tono más oscuro del rojo */
+        }
 
-/* Estilo especial para el botón de eliminar (si es visible) */
-.post-actions form button {
-    background-color: #FF6B6B; /* Tono rojo claro para resaltar el botón de eliminar */
-}
+        /* Estilo especial para el botón de eliminar (si es visible) */
+        .post-actions form button {
+            background-color: #FF6B6B; /* Tono rojo claro para resaltar el botón de eliminar */
+        }
 
-.post-actions form button:hover {
-    background-color: #EE5253; /* Efecto hover para el botón de eliminar */
-}
+        .post-actions form button:hover {
+            background-color: #EE5253; /* Efecto hover para el botón de eliminar */
+        }
 
+        footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-form {
+            display: inline-flex;
+            border: 2px solid #007bff;
+            border-radius: 50px;
+            padding: 10px;
+            background-color: #ffffff;
+        }
+
+        .comment-form input {
+            border: none;
+            outline: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            flex-grow: 1;
+            font-size: 16px;
+        }
+
+        .comment-form button {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+
+        .comentario-autor {
+            color: #00000000;
+        }
 
         
     </style>
@@ -415,8 +457,6 @@
         <div class="nav-links">
             <a href="/inicio">Inicio</a>
             <a href="/perfil">Mi Perfil</a>
-            <a href="#">Mensajes</a>
-            <a href="#">Configuraciones</a>
             <a href="/logout">Cerrar Sesión</a>
         </div>
         <div class="nav-profile">
@@ -430,10 +470,6 @@
         
         <!-- Sidebar -->
         <aside class="sidebar">
-            <a href="#">Explorar</a>
             <a href="/publicacion">Publicar</a>
-            <a href="#">Amigos</a>
-            <a href="#">Grupos</a>
-            <a href="#">Eventos</a>
-            <a href="#">Ajustes</a>
+            <a href="#">IA</a>
         </aside>

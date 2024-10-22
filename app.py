@@ -18,7 +18,6 @@ status = {'secionIniciada' : False,
     'idUsuario' : 0,
     }
 publicaciones = ""
-
 PubliPersonales = ""
 
 app = Flask(__name__)
@@ -128,7 +127,7 @@ def publicar():
     imagen = request.form['imagen']
     categoria = request.form['categoria']
     autor = {"id":status['idUsuario'], "nombre":status['nombre'], "foto":status['fotoPerfil']}
-    reacciones = {'likes':0, 'comentarios':0, 'compartidos':0}
+    reacciones = {'likes':0, 'comentarios':0, 'compartidos':0, 'idLikes':[]}
     comentarios = []
     publicacion = {'titulo':titulo, 'contenido':contenido, 'imagen':imagen, 'categoria':categoria, 'fecha_publicacion':datetime.datetime.now(), 'reacciones':reacciones, 'autor':autor, 'comentarios':comentarios}
     app.db.publicaciones.insert_one(publicacion)
@@ -236,6 +235,66 @@ def editarPublicacion(id):
     PubliPersonales = []
     PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
     return redirect('/inicio')
+
+
+@app.route('/like', methods=['POST'])
+def like():
+    global publicaciones
+    global PubliPersonales
+    id = request.form['_id']
+    idUsuario = request.form['idUsuario']
+    likes = int(request.form['likes'])
+    idlike = app.db.publicaciones.find_one({'_id': ObjectId(id)})
+    likeslist = [likes for likes in idlike['reacciones']['idLikes']]
+    for usuario in idlike['reacciones']['idLikes']:
+        if  idUsuario == usuario:
+            likes = likes - 1
+            likeslist.remove(idUsuario)
+            app.db.publicaciones.update_one({'_id': ObjectId(id)}, {'$set': {'reacciones.likes': likes, 'reacciones.idLikes': likeslist}})
+            publicaciones = []
+            publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
+            PubliPersonales = []    
+            PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
+            return render_template('sitio/inicio.html', publicaciones=publicaciones, status=status, PubliPersonales=PubliPersonales)
+    else:
+        likes = likes + 1
+        likeslist.append(idUsuario)
+        app.db.publicaciones.update_one({'_id': ObjectId(id)}, {'$set': {'reacciones.likes': likes, 'reacciones.idLikes': likeslist}})
+        publicaciones = []
+        publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
+        PubliPersonales = []    
+        PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
+        return render_template('sitio/inicio.html', publicaciones=publicaciones, status=status, PubliPersonales=PubliPersonales)    
+    
+@app.route('/verComentarios', methods=['POST'])
+def verComentarios():
+    id = request.form['_id']
+    comentarios = []
+    publicacion = app.db.publicaciones.find_one({'_id': ObjectId(id)})
+    comentarios = [comentario for comentario in publicacion['comentarios']]
+    return render_template('sitio/comentarios.html', comentarios=comentarios, publicacion = publicacion, status=status)
+
+@app.route('/comentar', methods=['POST'])
+def comentar():
+    global publicaciones
+    global PubliPersonales
+    global status
+    nombreAutor = request.form['nombreAutor']
+    fotoAutor = request.form['fotoAutor']
+    contenido= request.form['contenido']
+    id = request.form['_id']
+    publicacion = app.db.publicaciones.find_one({'_id': ObjectId(id)})
+    comentarios = [comentario for comentario in publicacion['comentarios']]
+    comentario = {'autor': {'nombre':nombreAutor, 'foto':fotoAutor}, 'contenido':contenido}
+    comentarios.append(comentario)
+    app.db.publicaciones.update_one({'_id': ObjectId(id)}, {'$set': {'comentarios': comentarios, 'reacciones.comentarios': len(comentarios)}})
+    publicacion = app.db.publicaciones.find_one({'_id': ObjectId(id)})
+    comentarios = [comentario for comentario in publicacion['comentarios']]
+    publicaciones = []
+    publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
+    PubliPersonales = []
+    PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
+    return render_template('sitio/comentarios.html', comentarios=comentarios, publicacion = publicacion, status=status)
 
 if __name__ == '__main__':
     app.run(debug=True)
