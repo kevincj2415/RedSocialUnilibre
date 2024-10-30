@@ -10,4 +10,6 @@ Descargar el archivo zip.
 
 //se puede ingresar a un usuario Administrador con las credenciales: kj@kj.com y password: kj1234
 
+Nota: se puede ejecutar el comando "pip install -r librerias.txt" si desea descargar las librerias utilizadas en un entorno diferente al virtual.
+
 
