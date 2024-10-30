@@ -1,0 +1,32 @@
+{% include 'navs/navEditarPerfil.html' %}
+
+<div class="containerEditarPerfil" xmlns="http://www.w3.org/1999/html">
+        <h2>Actualizar Usuario</h2>
+        <form action="/actualizar_usuario" method="POST" enctype="multipart/form-data">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="{{usuario["nombre"]}}" required>
+
+            <label for="correo">Correo Electrónico:</label>
+            <input type="email" id="correo" name="correo" value="{{usuario["correo"]}}" required>
+
+            {% if status["rol"] == "Administrador" %}
+            <label for="rol">Rol:</label>
+            <select id="rol" name="rol" value="{{status["rol"]}}">
+                <option value="Estudiante">Estudiante</option>
+                <option value="Profesor">Profesor</option>
+                <option value="Directivo">Directivo</option>
+                <option value="Administrador">Administrador</option>
+            </select>
+            {% endif %}
+
+            <input type="hidden" name="rol" value="{{usuario["rol"]}}">
+
+            <label for="foto_perfil">Foto de Perfil:</label>
+            <input type="text" id="foto_perfil" name="foto_perfil" value="{{usuario["foto_perfil"]}}">
+            <input type="hidden" name="id" value="{{usuario['id'] }}">
+            <input type="submit" value="Actualizar Usuario">
+        </form>
+    </div>
+
+</body>
+</html>

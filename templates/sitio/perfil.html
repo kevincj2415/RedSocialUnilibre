@@ -2,11 +2,16 @@
 
     <!-- Barra lateral para ver foto de perfil y opciones -->
         <div class="Perfil">
-            <img src="{{status["fotoPerfil"]}}" alt="Foto de perfil" class="profile-pic">
-            <a href="/cambiarFoto" id="changePhotoBtn" class="btn">Cambiar Foto de Perfil</a>
-            <a href="/editarPerfil" class="btn">Editar Información</a>
-            <a href="/inicio" class="btn">Inicio</a>
-            <a href="/logout" class="btn">Cerrar Sesión</a>
+            <form action="/editarPerfil" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="{{ status['idUsuario'] }}">
+                <img src="{{status["fotoPerfil"]}}" alt="Foto de perfil" class="profile-pic">
+                <a href="/cambiarFoto" id="changePhotoBtn" class="btn">Cambiar Foto de Perfil</a>
+                <!--<a href="/editarPerfil" class="btn">Editar Información</a> -->
+                <input type="hidden" name="id" value="{{status["idUsuario"]}}">
+                <a href="/inicio" class="btn">Inicio</a>
+                <a href="/logout" class="btn">Cerrar Sesión</a>
+                <button type="submit" class="btn">Editar Perfil</button>
+            </form>
         </div>
 
     <!-- Sección principal de contenido -->
@@ -34,8 +39,16 @@
                 <p>{{ publicacion["contenido"] }}</p>
                 <img src="{{publicacion["imagen"]}}" alt="Imagen de la publicación" class="post-image">
                 <div class="post-actions">
-                    <button>Likes: {{ publicacion["reacciones"]["likes"] }}</button>
-                    <button>Comentarios: {{ publicacion["reacciones"]["comentarios"] }}</button>
+                    <form action="/like" method="POST">
+                        <input type="hidden" name="_id" value="{{publicacion["_id"]}}">
+                        <input type="hidden" name="likes" value="{{publicacion["reacciones"]["likes"]}}">
+                        <input type="hidden" name="idUsuario" value="{{status["idUsuario"]}}">
+                        <button>Likes: {{ publicacion["reacciones"]["likes"] }}</button>
+                    </form>
+                    <form action="/verComentarios" method="POST">
+                        <input type="hidden" name="_id" value="{{publicacion["_id"]}}">
+                        <button>Comentarios: {{ publicacion["reacciones"]["comentarios"] }}</button>
+                    </form>
                     <button>Compartido: {{ publicacion["reacciones"]["compartidos"] }} </button>
                     {% if publicacion["autor"]["id"] == status["idUsuario"] %}
                         <form action="/editarpublicacion" method="POST">

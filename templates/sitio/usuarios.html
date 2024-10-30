@@ -1,0 +1,14 @@
+{%include 'navs/navPrincipal.html' %}
+
+    {% for usuario in usuarios %}
+    <div class="usuario">
+        <form action="/editarPerfil" method="POST">
+            <img src="{{usuario["foto_perfil"]}}" alt="Foto de perfil">
+            <h2>{{usuario["nombre"]}}</h2>
+            <p>{{usuario["correo"]}}</p>
+            <p>{{usuario["rol"]}}</p>
+            <input type="hidden" name="id" value="{{ usuario["id"] }}">
+            <button type="submit" class="btn">Editar Perfil</button>
+        </form>
+    </div>
+    {% endfor %}

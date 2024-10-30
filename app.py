@@ -16,6 +16,8 @@ status = {'secionIniciada' : False,
     "rol" : "",
     'fotoPerfil' : "",
     'idUsuario' : 0,
+    'errorCorreo' : 'No',
+    'errorContraseña' : 'No',
     }
 publicaciones = ""
 PubliPersonales = ""
@@ -50,18 +52,28 @@ def registro():
 
 @app.route('/inicioSesion')
 def inicioSesion():
-    return render_template('sitio/inicioSesion.html')
+    return render_template('sitio/inicioSesion.html', status = status)
 
 @app.route('/inicio')
 def inicio():
     if status['secionIniciada']:
         return render_template('sitio/inicio.html', publicaciones=publicaciones, status=status, PubliPersonales=PubliPersonales)
     else:
-        return render_template('sitio/inicioSesion.html')
+        return render_template('sitio/inicioSesion.html', status=status)
+
+@app.route('/usuarios')
+def usuarios():
+    sql = "SELECT * FROM usuario"
+    conexion = mysql.connection
+    cursor = conexion.cursor()
+    cursor.execute(sql)
+    usuarios = cursor.fetchall()
+    return render_template('sitio/usuarios.html', usuarios=usuarios, status=status)
 
 
 @app.route('/login', methods=['POST'])
 def login():
+    global status
     correo = request.form['email']
     password = request.form['password']
     sql = "SELECT * FROM usuario WHERE correo = %s"
@@ -70,12 +82,17 @@ def login():
     cursor = conexion.cursor()
     cursor.execute(sql, datos)
     user = cursor.fetchone()
+    if user is None:
+        status['errorCorreo'] = 'Si'
+        return render_template('sitio/inicioSesion.html', status = status)
+    else:
+        status['errorCorreo'] = 'No'
     conexion.commit()
     usuario = Usuario(user)
     if not usuario.check_password(password):
-        return redirect('/inicioSesion')
+        status['errorContraseña'] = 'Si'
+        return render_template('sitio/inicioSesion.html', status = status)
     else:
-        global status
         global PubliPersonales
         status['secionIniciada'] = True
         status['nombre'] = usuario.nombre
@@ -83,6 +100,7 @@ def login():
         status['rol'] = usuario.rol
         status['fotoPerfil'] = usuario.foto
         status['idUsuario'] = usuario.pid
+        status['errorContraseña'] = 'No'
         PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
         return redirect('/inicio')
     
@@ -91,10 +109,10 @@ def registrar():
     nombre = request.form['nombre']
     correo = request.form['email']
     password = request.form['password']
-    rol = request.form['role']
+    rol = 'Estudiante'
     foto = 'https://via.placeholder.com/150'
     fechaRegistro = datetime.datetime.now()
-    usuario = {'nombre':nombre, 'correo':correo, 'contraseña':password, 'rol':rol, 'foto':'https://via.placeholder.com/150', 'fecha_registro':datetime.datetime.now()}
+    usuario = {'id': -1, 'nombre':nombre, 'correo':correo, 'contraseña':password, 'rol':'Estudiante', 'foto_perfil':'https://via.placeholder.com/150', 'fecha_registro':datetime.datetime.now()}
     usuario = Usuario(usuario)
     contraseña = usuario.set_password(password)
     sql = "INSERT INTO usuario (nombre, correo, contraseña, rol, foto_perfil, fecha_registro) VALUES (%s, %s, %s, %s, %s, %s)"
@@ -167,33 +185,45 @@ def cambiarFotoPerfil():
 def actualizarUsuario():
     global publicaciones
     global PubliPersonales
+    idp = request.form['id']
     nombre = request.form['nombre']
     correo = request.form['correo']
     rol = request.form['rol']
     foto = request.form['foto_perfil']
     sql = "UPDATE usuario SET nombre = %s, correo = %s, rol = %s, foto_perfil = %s WHERE id = %s"
-    datos = (nombre, correo, rol, foto, status['idUsuario'])
+    datos = (nombre, correo, rol, foto, idp)
     conexion = mysql.connection
     cursor = conexion.cursor()
     cursor.execute(sql, datos)
     conexion.commit()
-    for publicacion in app.db.publicaciones.find({'autor.id': status['idUsuario']}):
+    for publicacion in app.db.publicaciones.find({'autor.id': idp}):
         id = publicacion['_id']
         ayuda = {'autor.nombre': nombre, 'autor.foto': foto}
         app.db.publicaciones.update_one({'_id': ObjectId(id)}, {'$set': ayuda})
-    status['nombre'] = nombre
-    status['correo'] = correo
-    status['rol'] = rol
-    status['fotoPerfil'] = foto
+    if idp == status['idUsuario']:
+        status['nombre'] = nombre
+        status['correo'] = correo
+        status['rol'] = rol
+        status['fotoPerfil'] = foto
     publicaciones = []
     publicaciones = [publicacion for publicacion in app.db.publicaciones.find({})]
     PubliPersonales = []
     PubliPersonales = [publiPersonale for publiPersonale in app.db.publicaciones.find({ "autor.id": status['idUsuario'] })]
-    return redirect('/perfil')
+    if idp == status['idUsuario']:
+        return redirect('/perfil')
+    else:
+        return redirect('/inicio')
 
-@app.route('/editarPerfil')
+@app.route('/editarPerfil', methods=['GET', 'POST'])
 def editarPerfil():
-    return render_template('sitio/editraPerfil.html', status=status)
+    id = request.form['id']
+    sql = "SELECT * FROM usuario WHERE id = %s"
+    datos =  (id,)
+    conexion = mysql.connection
+    cursor = conexion.cursor()
+    cursor.execute(sql, datos)
+    usuario = cursor.fetchone()
+    return render_template('sitio/editarPerfil.html', usuario=usuario, status=status)
 
 @app.route('/eliminarpublicacion/<id>', methods=['POST'])
 def eliminarPublicacion(id):
